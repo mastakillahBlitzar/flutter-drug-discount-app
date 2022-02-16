@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:plant_app/model/medicine.dart';
+import 'package:drug_discount_app/model/medicine.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';

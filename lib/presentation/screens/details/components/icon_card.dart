@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plant_app/constants.dart';
+import 'package:drug_discount_app/constants.dart';
 
 class IconCard extends StatelessWidget {
   const IconCard({
@@ -34,7 +34,10 @@ class IconCard extends StatelessWidget {
           ),
         ],
       ),
-      child: SvgPicture.asset(icon),
+      child: SvgPicture.asset(
+        icon,
+        color: kPrimaryColor,
+      ),
     );
   }
 }

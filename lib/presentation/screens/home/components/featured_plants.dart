@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plant_app/constants.dart';
+import 'package:drug_discount_app/constants.dart';
 
 class FeaturedPlants extends StatelessWidget {
   const FeaturedPlants({
@@ -13,15 +13,15 @@ class FeaturedPlants extends StatelessWidget {
       child: Row(
         children: [
           FeaturedPlantsCard(
-            image: "assets/images/bottom_img_1.png",
+            image: "assets/images/ensure.png",
             press: () {},
           ),
           FeaturedPlantsCard(
-            image: "assets/images/bottom_img_1.png",
+            image: "assets/images/ensure.png",
             press: () {},
           ),
           FeaturedPlantsCard(
-            image: "assets/images/bottom_img_1.png",
+            image: "assets/images/ensure.png",
             press: () {},
           ),
         ],

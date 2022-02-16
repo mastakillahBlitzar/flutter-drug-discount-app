@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plant_app/constants.dart';
-import 'package:plant_app/logic/bloc/cart_bloc.dart';
-import 'package:plant_app/presentation/router/app_router.dart';
+import 'package:drug_discount_app/constants.dart';
+import 'package:drug_discount_app/logic/bloc/cart_bloc.dart';
+import 'package:drug_discount_app/presentation/router/app_router.dart';
 
 void main() {
   runApp(MyApp(

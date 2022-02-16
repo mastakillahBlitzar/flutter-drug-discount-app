@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plant_app/logic/bloc/cart_bloc.dart';
-import 'package:plant_app/model/medicine.dart';
-import 'package:plant_app/presentation/screens/details/components/body.dart';
+import 'package:drug_discount_app/logic/bloc/cart_bloc.dart';
+import 'package:drug_discount_app/model/medicine.dart';
+import 'package:drug_discount_app/presentation/screens/details/components/body.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Medicine medicine;

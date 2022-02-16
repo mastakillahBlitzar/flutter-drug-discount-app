@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plant_app/constants.dart';
+import 'package:drug_discount_app/constants.dart';
 
 class BottomTabsBar extends StatelessWidget {
   const BottomTabsBar({
@@ -28,7 +28,10 @@ class BottomTabsBar extends StatelessWidget {
         children: [
           IconButton(
               onPressed: () {},
-              icon: SvgPicture.asset("assets/icons/flower.svg")),
+              icon: SvgPicture.asset(
+                "assets/icons/flower.svg",
+                color: kPrimaryColor,
+              )),
           IconButton(
               onPressed: () {},
               icon: SvgPicture.asset("assets/icons/heart-icon.svg")),

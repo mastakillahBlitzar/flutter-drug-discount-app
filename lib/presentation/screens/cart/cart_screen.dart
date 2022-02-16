@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plant_app/logic/bloc/cart_bloc.dart';
+import 'package:drug_discount_app/logic/bloc/cart_bloc.dart';
+
+import 'components/cart_view.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -8,7 +10,9 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Cart"),
+      ),
       body: Container(
         padding: const EdgeInsets.all(16),
         child: BlocBuilder<CartBloc, CartState>(
@@ -17,43 +21,22 @@ class CartScreen extends StatelessWidget {
               return const CircularProgressIndicator();
             }
             if (state is CartLoaded && state.medicineAdded.isNotEmpty) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                    child: Row(
-                      children: [
-                        Text(
-                          "Items in your cart",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5
-                              ?.copyWith(
-                                  color: Colors.blueAccent,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state.medicineAdded.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          child: ListTile(
-                              title: Text(state.medicineAdded[index].name),
-                              trailing: IconButton(
-                                  onPressed: () {
-                                    context.read<CartBloc>().add(RemoveItem(
-                                        medicine: state.medicineAdded[index]));
-                                  },
-                                  icon: const Icon(Icons.cancel))),
-                        );
-                      }),
-                ],
+              return CartView(
+                medicineAdded: state.medicineAdded,
               );
             }
-            return const Text("No Items on Cart");
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Center(
+                  child: Text(
+                    "No Items on Cart",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            );
           },
         ),
       ),

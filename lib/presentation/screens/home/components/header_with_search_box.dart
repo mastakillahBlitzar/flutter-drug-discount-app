@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plant_app/constants.dart';
+import 'package:drug_discount_app/constants.dart';
 
 class HeaderWithSearchBox extends StatelessWidget {
   const HeaderWithSearchBox({
@@ -39,7 +39,7 @@ class HeaderWithSearchBox extends StatelessWidget {
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
-                  Image.asset("assets/images/logo.png")
+                  Image.asset("assets/images/SK.png")
                 ],
               ),
             ),

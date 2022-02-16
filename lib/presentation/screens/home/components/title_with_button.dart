@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plant_app/constants.dart';
+import 'package:drug_discount_app/constants.dart';
 
 class TitleWithButton extends StatelessWidget {
   const TitleWithButton({

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plant_app/constants.dart';
-import 'package:plant_app/medicine_list.dart';
-import 'package:plant_app/model/medicine.dart';
-import 'package:plant_app/presentation/screens/details/details_screen.dart';
+import 'package:drug_discount_app/constants.dart';
+import 'package:drug_discount_app/medicine_list.dart';
+import 'package:drug_discount_app/model/medicine.dart';
+import 'package:drug_discount_app/presentation/screens/details/details_screen.dart';
 
 class RecomendedPlants extends StatelessWidget {
   RecomendedPlants({
@@ -27,7 +27,7 @@ class RecomendedPlants extends StatelessWidget {
             image: medicines[index].image,
             title: medicines[index].name,
             country: medicines[index].laboratory,
-            price: 440,
+            price: medicines[index].price,
             press: () {
               Navigator.push(
                 context,

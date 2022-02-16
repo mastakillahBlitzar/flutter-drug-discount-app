@@ -1,22 +1,24 @@
+import 'package:drug_discount_app/model/medicine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:plant_app/constants.dart';
-import 'package:plant_app/presentation/screens/details/components/icon_card.dart';
+import 'package:drug_discount_app/constants.dart';
+import 'package:drug_discount_app/presentation/screens/details/components/icon_card.dart';
 
 class ImageAndIcon extends StatelessWidget {
   const ImageAndIcon({
     Key? key,
-    required this.size,
+    required this.size, required this.medicine,
   }) : super(key: key);
 
   final Size size;
+  final Medicine medicine;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: kDefaultPadding * 3),
       child: SizedBox(
-        height: size.height * .8,
+        height: size.height * .7,
         child: Row(
           children: [
             Expanded(
@@ -60,10 +62,10 @@ class ImageAndIcon extends StatelessWidget {
                       color: kPrimaryColor.withOpacity(0.29),
                     )
                   ],
-                  image: const DecorationImage(
+                  image: DecorationImage(
                       alignment: Alignment.centerLeft,
                       fit: BoxFit.cover,
-                      image: AssetImage("assets/images/img.png"))),
+                      image: AssetImage(medicine.image))),
             ),
           ],
         ),

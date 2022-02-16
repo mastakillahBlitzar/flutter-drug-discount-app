@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plant_app/logic/cubit/cart_cubit.dart';
-import 'package:plant_app/presentation/screens/cart/cart_screen.dart';
-import 'package:plant_app/presentation/screens/home/home_screen.dart';
+import 'package:drug_discount_app/presentation/screens/cart/cart_screen.dart';
+import 'package:drug_discount_app/presentation/screens/home/home_screen.dart';
 
 class AppRouter {
-  final CartCubit _cartCubit = CartCubit();
-
   Route? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case '/':
@@ -24,9 +21,5 @@ class AppRouter {
       default:
         return null;
     }
-  }
-
-  void dispose() {
-    _cartCubit.close();
   }
 }

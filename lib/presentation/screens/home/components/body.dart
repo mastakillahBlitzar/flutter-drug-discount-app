@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:plant_app/constants.dart';
-import 'package:plant_app/presentation/screens/home/components/featured_plants.dart';
-import 'package:plant_app/presentation/screens/home/components/header_with_search_box.dart';
-import 'package:plant_app/presentation/screens/home/components/recomended_plants.dart';
-import 'package:plant_app/presentation/screens/home/components/title_with_button.dart';
+import 'package:drug_discount_app/constants.dart';
+import 'package:drug_discount_app/presentation/screens/home/components/featured_plants.dart';
+import 'package:drug_discount_app/presentation/screens/home/components/header_with_search_box.dart';
+import 'package:drug_discount_app/presentation/screens/home/components/recomended_plants.dart';
+import 'package:drug_discount_app/presentation/screens/home/components/title_with_button.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class Body extends StatelessWidget {
             press: () {},
           ),
           RecomendedPlants(),
-          TitleWithButton(title: "Featured Plants", press: () {}),
+          TitleWithButton(title: "Featured Health", press: () {}),
           const FeaturedPlants(),
           const SizedBox(height: kDefaultPadding),
         ],

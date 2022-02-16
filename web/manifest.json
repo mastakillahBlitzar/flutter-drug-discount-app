@@ -1,6 +1,6 @@
 {
-    "name": "plant_app",
-    "short_name": "plant_app",
+    "name": "drug_discount_app",
+    "short_name": "drug_discount_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

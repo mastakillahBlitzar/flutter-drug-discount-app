@@ -1,4 +1,4 @@
-# plant_app
+# drug_discount_app
 
 A new Flutter project.
 
