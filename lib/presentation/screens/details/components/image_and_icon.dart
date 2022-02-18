@@ -7,7 +7,8 @@ import 'package:drug_discount_app/presentation/screens/details/components/icon_c
 class ImageAndIcon extends StatelessWidget {
   const ImageAndIcon({
     Key? key,
-    required this.size, required this.medicine,
+    required this.size,
+    required this.medicine,
   }) : super(key: key);
 
   final Size size;
@@ -39,7 +40,10 @@ class ImageAndIcon extends StatelessWidget {
                               SvgPicture.asset("assets/icons/back_arrow.svg")),
                     ),
                     const Spacer(),
-                    const IconCard(icon: "assets/icons/sun.svg"),
+                    const Tooltip(
+                      child: IconCard(icon: "assets/icons/sun.svg"),
+                      message: "testin my tooltip",
+                    ),
                     const IconCard(icon: "assets/icons/icon_2.svg"),
                     const IconCard(icon: "assets/icons/icon_3.svg"),
                     const IconCard(icon: "assets/icons/icon_4.svg"),

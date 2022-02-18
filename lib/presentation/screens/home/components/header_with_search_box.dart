@@ -74,7 +74,10 @@ class HeaderWithSearchBox extends StatelessWidget {
                     focusedBorder: InputBorder.none,
                     suffixIconConstraints:
                         const BoxConstraints(minHeight: 24, minWidth: 24),
-                    suffixIcon: SvgPicture.asset("assets/icons/search.svg"),
+                    suffixIcon: SvgPicture.asset(
+                      "assets/icons/search.svg",
+                      color: kPrimaryColor,
+                    ),
                   ),
                 ),
               ),
