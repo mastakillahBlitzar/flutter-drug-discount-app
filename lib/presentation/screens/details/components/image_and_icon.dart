@@ -1,4 +1,5 @@
 import 'package:drug_discount_app/model/medicine.dart';
+import 'package:drug_discount_app/presentation/components/custom_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:drug_discount_app/constants.dart';
@@ -44,7 +45,10 @@ class ImageAndIcon extends StatelessWidget {
                       child: IconCard(icon: "assets/icons/sun.svg"),
                       message: "testin my tooltip",
                     ),
-                    const IconCard(icon: "assets/icons/icon_2.svg"),
+                    const CustomTooltip(
+                      content: IconCard(icon: "assets/icons/icon_2.svg"),
+                      message: "this is the message",
+                    ),
                     const IconCard(icon: "assets/icons/icon_3.svg"),
                     const IconCard(icon: "assets/icons/icon_4.svg"),
                   ],
