@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:drug_discount_app/constants.dart';
-import 'package:drug_discount_app/presentation/components/triangle_painter.dart';
+import 'package:drug_discount_app/presentation/components/arrow_clipper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -11,9 +11,14 @@ class CustomTooltip extends StatefulWidget {
   final Widget content;
   final Widget? contentOnHover;
   final String? message;
+  final Color tooltipColor;
 
   const CustomTooltip(
-      {Key? key, required this.content, this.message, this.contentOnHover})
+      {Key? key,
+      required this.content,
+      this.message,
+      this.contentOnHover,
+      this.tooltipColor = Colors.white})
       : assert((message == null) != (contentOnHover == null),
             'Either `message` or `contentOnHover` must be specified'),
         super(key: key);
@@ -51,9 +56,8 @@ class _TooltipState extends State<CustomTooltip>
     with SingleTickerProviderStateMixin {
   late bool _isConcealed;
   late bool _forceRemoval;
-  static const Duration _fadeInDuration = Duration(milliseconds: 10);
-  static const Duration _fadeOutDuration = Duration(milliseconds: 10);
-  //static const Duration _defaultHoverShowDuration = Duration(milliseconds: 100);
+  static const Duration _fadeInDuration = Duration(milliseconds: 50);
+  static const Duration _fadeOutDuration = Duration(milliseconds: 100);
 
   late double height;
   late EdgeInsetsGeometry padding;
@@ -69,11 +73,14 @@ class _TooltipState extends State<CustomTooltip>
   late bool _mouseIsConnected;
   late bool _visible;
 
-  late Duration hoverShowDuration = const Duration(milliseconds: 100);
+  Duration hoverShowDuration = const Duration(milliseconds: 100);
+  Color get _tooltipColor => widget.tooltipColor;
 
-  //String? get _tooltipMessage => widget.message;
   Widget? get _tooltipMessage => widget.message != null
-      ? Text(widget.message ?? "")
+      ? Text.rich(
+          TextSpan(text: widget.message),
+          style: textStyle,
+        )
       : widget.contentOnHover;
 
   @override
@@ -226,13 +233,16 @@ class _TooltipState extends State<CustomTooltip>
       ancestor: overlayState.context.findRenderObject(),
     );
 
+    const double bubblePointerWidth = 30;
+    const double bubblePointerHeight = 6;
+
     // We create this widget outside of the overlay entry's builder to prevent
     // updated values from happening to leak into the overlay when the overlay
     // rebuilds.
     final Widget overlay = Directionality(
       textDirection: Directionality.of(context),
       child: _TooltipOverlay(
-        richMessage: TextSpan(text: widget.message),
+        richMessage: _tooltipMessage ?? const Text(""),
         height: height,
         padding: padding,
         margin: margin,
@@ -241,18 +251,21 @@ class _TooltipState extends State<CustomTooltip>
         decoration: decoration,
         textStyle: textStyle,
         animation: CurvedAnimation(
-            parent: _controller,
-            curve: Curves.fastOutSlowIn,
-            reverseCurve: Curves.easeIn),
+          parent: _controller,
+          curve: Curves.fastOutSlowIn,
+          reverseCurve: Curves.easeIn,
+        ),
         target: target,
         verticalOffset: verticalOffset,
         preferBelow: preferBelow,
+        tooltipColor: _tooltipColor,
+        bubblePointerDimensions:
+            const Offset(bubblePointerWidth, bubblePointerHeight),
       ),
     );
     _entry = OverlayEntry(builder: (BuildContext context) => overlay);
     _isConcealed = false;
     overlayState.insert(_entry!);
-    //SemanticsService.tooltip(_tooltipMessage);
     if (_mouseIsConnected) {
       // Hovered tooltips shouldn't show more than one at once. For example, a chip with
       // a delete icon shouldn't show both the delete icon tooltip and the chip tooltip
@@ -265,7 +278,6 @@ class _TooltipState extends State<CustomTooltip>
 
   void _removeEntry() {
     CustomTooltip._openedTooltips.remove(this);
-    //_mouseIn.remove(this);
     _dismissTimer?.cancel();
     _dismissTimer = null;
     if (!_isConcealed) {
@@ -291,7 +303,6 @@ class _TooltipState extends State<CustomTooltip>
 
   @override
   Widget build(BuildContext context) {
-    //return widget.content;
     final ThemeData theme = Theme.of(context);
 
     final TextStyle defaultTextStyle;
@@ -303,7 +314,7 @@ class _TooltipState extends State<CustomTooltip>
       fontSize: _getDefaultFontSize(),
     );
     defaultDecoration = BoxDecoration(
-      color: Colors.white,
+      color: _tooltipColor,
       borderRadius: const BorderRadius.all(Radius.circular(4)),
       boxShadow: [
         BoxShadow(
@@ -323,8 +334,6 @@ class _TooltipState extends State<CustomTooltip>
     decoration = defaultDecoration;
     textStyle = defaultTextStyle;
 
-    //  widget.decoration ?? tooltipTheme.decoration ?? defaultDecoration;
-    //textStyle = widget.textStyle ?? tooltipTheme.textStyle ?? defaultTextStyle;
     Widget result = widget.content;
     if (_visible && _mouseIsConnected) {
       result = MouseRegion(
@@ -348,6 +357,7 @@ class _TooltipPositionDelegate extends MultiChildLayoutDelegate {
   ///
   /// The arguments must not be null.
   _TooltipPositionDelegate({
+    required this.bubblePointerDimensions,
     required this.target,
     required this.verticalOffset,
     required this.preferBelow,
@@ -369,20 +379,7 @@ class _TooltipPositionDelegate extends MultiChildLayoutDelegate {
   /// direction, the tooltip will be displayed in the opposite direction.
   final bool preferBelow;
 
-/*   @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
-      constraints.loosen();
-
-  @override
-  Offset getPositionForChild(Size size, Size childSize) {
-    return positionDependentBox(
-      size: size,
-      childSize: childSize,
-      target: target,
-      verticalOffset: verticalOffset,
-      preferBelow: preferBelow,
-    );
-  } */
+  final Offset bubblePointerDimensions;
 
   @override
   bool shouldRelayout(_TooltipPositionDelegate oldDelegate) {
@@ -411,7 +408,9 @@ class _TooltipPositionDelegate extends MultiChildLayoutDelegate {
     if (hasChild(_Slot.arrow)) {
       layoutChild(_Slot.arrow, BoxConstraints.loose(size));
       positionChild(
-          _Slot.arrow, Offset(target.dx - 25 / 2, target.dy + verticalOffset));
+          _Slot.arrow,
+          Offset(target.dx - bubblePointerDimensions.dx / 2,
+              target.dy + verticalOffset + bubblePointerDimensions.dy));
     }
   }
 }
@@ -431,9 +430,11 @@ class _TooltipOverlay extends StatelessWidget {
     required this.preferBelow,
     this.onEnter,
     this.onExit,
+    required this.tooltipColor,
+    required this.bubblePointerDimensions,
   }) : super(key: key);
 
-  final InlineSpan richMessage;
+  final Widget richMessage;
   final double height;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
@@ -443,6 +444,8 @@ class _TooltipOverlay extends StatelessWidget {
   final Offset target;
   final double verticalOffset;
   final bool preferBelow;
+  final Color tooltipColor;
+  final Offset bubblePointerDimensions;
   final PointerEnterEventListener? onEnter;
   final PointerExitEventListener? onExit;
 
@@ -453,19 +456,6 @@ class _TooltipOverlay extends StatelessWidget {
       opacity: animation,
       child: Stack(
         children: [
-          /* Positioned(
-            left: target.dx - kDefaultPadding - 35/2,
-            top: 0,
-            child: CustomPaint(
-              size: const Size(35.0, 20),
-              painter: TrianglePainter(isDownArrow: false, color: Colors.white),
-            ),
-          ), */
-          /* Container(
-            width: target.dx,
-            height: target.dy,
-            color: Colors.amber.withOpacity(.5),
-          ), */
           ConstrainedBox(
             constraints: BoxConstraints(minHeight: height),
             child: DefaultTextStyle(
@@ -475,13 +465,7 @@ class _TooltipOverlay extends StatelessWidget {
                 padding: padding,
                 margin: margin,
                 child: Center(
-                  widthFactor: 1.0,
-                  heightFactor: 1.0,
-                  child: Text.rich(
-                    richMessage,
-                    style: textStyle,
-                  ),
-                ),
+                    widthFactor: 1.0, heightFactor: 1.0, child: richMessage),
               ),
             ),
           ),
@@ -495,24 +479,25 @@ class _TooltipOverlay extends StatelessWidget {
         child: result,
       );
     }
-    Widget arrow = CustomPaint(
-      size: const Size(25.0, 15),
-      painter: TrianglePainter(isDownArrow: false, color: Colors.white),
-    );
-    return /* Positioned.fill(
-      child: CustomSingleChildLayout(
-        delegate: _TooltipPositionDelegate(
-          target: target,
-          verticalOffset: verticalOffset,
-          preferBelow: preferBelow,
+    Widget arrow = ClipPath(
+      clipper: ArrowClip(),
+      child: IgnorePointer(
+        child: FadeTransition(
+          opacity: animation,
+          child: Container(
+            height: bubblePointerDimensions.dy,
+            width: bubblePointerDimensions.dx,
+            decoration: BoxDecoration(
+              color: tooltipColor,
+            ),
+          ),
         ),
-        child: result,
       ),
-    ); */
-
-        Positioned.fill(
+    );
+    return Positioned.fill(
       child: CustomMultiChildLayout(
         delegate: _TooltipPositionDelegate(
+          bubblePointerDimensions: bubblePointerDimensions,
           target: target,
           verticalOffset: verticalOffset,
           preferBelow: preferBelow,
